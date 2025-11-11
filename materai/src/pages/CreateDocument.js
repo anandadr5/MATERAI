@@ -6,6 +6,7 @@ import {
   getUlokOptions,
   getLingkupOptions,
 } from "../services/googleSheets";
+import { useAuth } from "../context/AuthContext";
 
 // Tambahkan helper untuk ambil cabang user dari localStorage
 const SESSION_KEY = "MATERAI_USER";
@@ -22,6 +23,7 @@ function getSessionCabang() {
 const initial = { cabang: "", ulok: "", lingkup: "" };
 
 export default function CreateDocument() {
+  const { user } = useAuth();
   const [form, setForm] = useState(initial);
   const [file, setFile] = useState(null);
   const [submitting, setSubmitting] = useState(false);
@@ -110,6 +112,7 @@ useEffect(() => {
         cabang: form.cabang.trim(),
         ulok: form.ulok.trim(),
         lingkup: form.lingkup.trim(),
+        uploader_email: user?.email || '',
         file: {
           name: f.name,
           mimeType: f.mimeType,
